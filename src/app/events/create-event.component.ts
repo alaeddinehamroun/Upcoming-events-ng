@@ -1,6 +1,6 @@
 import { Component } from "@angular/core";
 import { Router } from "@angular/router";
-import { EventService } from "./shared";
+import { EventService, IEvent } from "./shared";
 
 @Component({
     templateUrl: './create-event.component.html',
@@ -16,7 +16,7 @@ import { EventService } from "./shared";
 })
 
 export class CreateEventComponent {
-    newEvent :any
+    newEvent!: IEvent
     isDirty: boolean = true
     constructor(private router: Router,
                 private eventService: EventService){}
@@ -24,10 +24,12 @@ export class CreateEventComponent {
         this.router.navigate(['/events'])
 
     }
-    saveEvent(formValues: any) {
-        this.eventService.saveEvent(formValues)
-        this.isDirty = false
-        this.router.navigate(['/events'])
+    saveEvent(formValues: IEvent) {
+        this.eventService.saveEvent(formValues).subscribe(() => {
+            this.isDirty = false
+            this.router.navigate(['/events'])
+        });
+        
     }   
 
 }
